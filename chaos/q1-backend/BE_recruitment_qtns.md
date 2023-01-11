@@ -14,11 +14,18 @@
         }).join().unwrap();
     ```
 
-    A:
+    A: This code attempts to move a reference to a RefCell into a thread, but RefCell is not Sync, so this is
+    not possible. Rust uses the Send and Sync traits to indicate the thread safety of types, and in this case
+    the unsynchronized interior mutability of RefCell makes it thread-unsafe. More specifically, it cannot be
+    safely referenced by multiple threads, making it not Sync. It can however, be sent across threads, so it
+    is still Send.
 
 2.  Shortly discuss, when modelling a response to a HTTP request in Rust, would you prefer to use `Option` or `Result`?
 
-    A:
+    A: A response to an HTTP request primarily contains data along with a status code, which could be an error.
+    If one had to be chosen over the other, Result would be more appropriate as it allows for indicating what
+    kind of error may have occurred, rather than simply the presence or absence of a response as would be implied
+    with Option.
 
 3.  In `student.psv` there are some fake student datas from UNSW CSE (no doxx!). In each row, the fields from left to right are
 
